@@ -2,26 +2,31 @@
 
 require './vendor/autoload.php';
 
-$samples = [
-    'picnic.txt',
-    'grad_obrechennij.txt',
-];
+$samples = [];
 
-// generate dictionary
+foreach (new FilesystemIterator('./samples/') as $file) {
+    /** @var FilesystemIterator $file */
+    if (!$file->isFile() || $file->getFilename() == '.gitkeep') {
+        continue;
+    }
+
+    $samples[] = $file->getFilename();
+}
+
+// init dictionary
 
 $dictionary = new xedelweiss\tGen\Dictionary();
 
-foreach ($samples as $sampleName) {
-    $content = file_get_contents('./samples/' . $sampleName);
-    $dictionary->addSample($content);
+if (file_exists('./compiled/dictionary.tgd')) {
+    $dictionary->loadFromFile('./compiled/dictionary.tgd');
+} else {
+    foreach ($samples as $sampleName) {
+        $content = file_get_contents('./samples/' . $sampleName);
+        $dictionary->addSample($content);
+    }
+
+    $dictionary->compile()->saveToFile('./compiled/dictionary.tgd');
 }
-
-$dictionary->compile()->saveToFile('./compiled/dictionary.tgd');
-
-// load dictionary
-
-// $dictionary = new xedelweiss\tGen\Dictionary();
-// $dictionary->loadFromFile('./compiled/dictionary.tgd');
 
 // init generator
 
@@ -30,4 +35,5 @@ $generator->setDictionary($dictionary);
 
 // use generator
 
-echo $generator->sentence(10);
+$sentence = $generator->sentence(10);
+echo $sentence;
