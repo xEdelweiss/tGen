@@ -44,6 +44,14 @@ class Metadata
         return $this->data[$word->canonized()];
     }
 
+    /**
+     * @return array
+     */
+    public function getAllWords()
+    {
+        return array_keys($this->data);
+    }
+
     protected function setWordMetadata(MetadataElement $metadataElement)
     {
         $word = $metadataElement->word();
