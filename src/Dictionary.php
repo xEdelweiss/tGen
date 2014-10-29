@@ -18,6 +18,7 @@ const MINIMAL_WORDS_IN_SAMPLE_SENTENCE = 5;
 class Dictionary
 {
     const ENCODING = 'UTF-8';
+    const DEPTH = 3;
 
     protected $samples = [];
     public $structure = [];
@@ -64,9 +65,10 @@ class Dictionary
     }
 
     /**
+     * @param int $depth
      * @return $this
      */
-    public function compile($depth = 3)
+    public function compile($depth = self::DEPTH)
     {
         $text      = implode("\n", $this->samples);
         $text      = $this->preProcess($text);

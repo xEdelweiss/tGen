@@ -55,9 +55,11 @@ class Generator
 
     /**
      * @param int $wordsCount
+     * @param int $depth
+     * @throws \Exception
      * @return Sentence
      */
-    public function sentence($wordsCount = 5, $depth = 3)
+    public function sentence($wordsCount = 5, $depth = Dictionary::DEPTH)
     {
         $result = new Sentence();
 
