@@ -47,11 +47,9 @@ class Simple extends Base
      * @throws \Exception
      * @return Sentence
      */
-    public function sentence($wordsCount = 5, $depth = Dictionary::DEPTH)
+    public function sentence($wordsCount = 5, $previousWords = [], $depth = Dictionary::DEPTH)
     {
         $result = new Sentence();
-
-        $previousWords = [];
 
         while ($result->wordsCount() < $wordsCount) {
             $canonized = $this->getNext($previousWords);
