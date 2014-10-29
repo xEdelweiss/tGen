@@ -21,6 +21,8 @@ use xedelweiss\tGen\WordsSet;
  */
 class Simple extends Base
 {
+    const MINIMAL_SYLLABLE_COUNT_IN_LAST_WORD = 1;
+
     /**
      * @param array $path
      * @return string
@@ -55,10 +57,27 @@ class Simple extends Base
 
         while ($result->wordsCount() < $wordsCount) {
             $canonized = $this->getNext($previousWords);
+
+            // try to replace short words in last position with longer ones
+            if ($wordsCount - $result->wordsCount() == 1) {
+                if ((new Word($canonized))->getSyllableCount() <= self::MINIMAL_SYLLABLE_COUNT_IN_LAST_WORD) {
+                    $maxTries = 3;
+                    for ($i = 0; $i < $maxTries; $i++) {
+                        $newCanonized = $this->getNext($previousWords); // @todo work with WordsSet+filters instead of this
+                        echo '// trying to replace "' . $canonized . '" with "' . $newCanonized . '"' . PHP_EOL;
+
+                        if ((new Word($newCanonized))->getSyllableCount() > self::MINIMAL_SYLLABLE_COUNT_IN_LAST_WORD) {
+                            $canonized = $newCanonized;
+                            break;
+                        }
+                    }
+                }
+            }
+
             $metadata = $this->dictionary->metadata->getWordMetadata(new Word($canonized));
             $word = $metadata->isUpperCase() || ($result->wordsCount() == 0)
-                  ? $metadata->word()->value(Word::CASE_UPPER)
-                  : $metadata->word()->value(Word::CASE_LOWER);
+                ? $metadata->word()->value(Word::CASE_UPPER)
+                : $metadata->word()->value(Word::CASE_LOWER);
 
             $result->addWord($word);
 
@@ -66,8 +85,6 @@ class Simple extends Base
             if (count($previousWords) > $depth) {
                 array_shift($previousWords);
             }
-
-            // var_dump($previousWords);
         }
 
         $result->addElement(SentenceElement::POSTSPACED_ELEMENT, '.', Sentence::ELEMENT_ADD_REPLACE);
