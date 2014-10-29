@@ -4,4 +4,6 @@
 !/compiled/.gitkeep
 /samples/*
 !/samples/.gitkeep
+/tmp/*
+!/tmp/.gitkeep
 composer.lock
