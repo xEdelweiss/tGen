@@ -67,7 +67,7 @@ class Simple extends Base
                 array_shift($previousWords);
             }
 
-            var_dump($previousWords);
+            // var_dump($previousWords);
         }
 
         $result->addElement(SentenceElement::POSTSPACED_ELEMENT, '.', Sentence::ELEMENT_ADD_REPLACE);
