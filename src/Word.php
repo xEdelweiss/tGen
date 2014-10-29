@@ -86,7 +86,8 @@ class Word
 
         $onlyVowels = preg_replace('/([^' . self::VOWELS . '])/ui', '', $word);
 
-        return mb_strlen($onlyVowels, self::ENCODING);
+        $vowelsCount = mb_strlen($onlyVowels, self::ENCODING);
+        return $vowelsCount > 0 ? $vowelsCount : 1;
     }
 
     /**
