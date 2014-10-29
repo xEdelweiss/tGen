@@ -1,5 +1,7 @@
 /vendor
 /.idea
-/compiled
-/samples
+/compiled/*
+!/compiled/.gitkeep
+/samples/*
+!/samples/.gitkeep
 composer.lock
