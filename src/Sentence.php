@@ -71,15 +71,24 @@ class Sentence
      */
     public function wordsCount()
     {
-        $count = 0;
+        return count($this->getWords());
+    }
+
+    /**
+     * Return only words
+     * @return array
+     */
+    public function getWords()
+    {
+        $result = [];
 
         foreach ($this->structure as $element) {
             if ($element->type == SentenceElement::WORD) {
-                $count++;
+                $result[] = $element->value;
             }
         }
 
-        return $count;
+        return $result;
     }
 
     /**
