@@ -16,6 +16,11 @@ namespace xedelweiss\tGen;
  */
 class WordsSet
 {
+    const MODE_EQUAL = '==';
+    const MODE_LTE = '<=';
+    const MODE_LT = '<';
+    const MODE_GTE = '>=';
+    const MODE_GT = '>';
 
     protected $words = [];
 
@@ -57,13 +62,14 @@ class WordsSet
      * @param $count
      * @return WordsSet
      */
-    public function withSyllableCount($count)
+    public function withSyllableCount($count, $mode = self::MODE_EQUAL)
     {
         $match = [];
 
         foreach ($this->words as $word) {
             $word = new Word($word);
-            if ($word->getSyllableCount() == $count) {
+            $check = eval('return ' . $word->getSyllableCount() . $mode . $count . ';');
+            if ($check) {
                 $match[] = $word->canonized();
             }
         }

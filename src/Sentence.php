@@ -74,6 +74,18 @@ class Sentence
         return count($this->getWords());
     }
 
+    public function syllableCount()
+    {
+        $words = $this->getWords();
+        $result = 0;
+
+        foreach ($words as $word) {
+            $result += (new Word($word))->getSyllableCount();
+        }
+
+        return $result;
+    }
+
     /**
      * Return only words
      * @return array
