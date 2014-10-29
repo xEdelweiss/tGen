@@ -22,8 +22,18 @@ class Dictionary
 
     protected $samples = [];
     public $structure = [];
-    public $metadata = [];
+
+    /**
+     * @var Metadata
+     */
+    public $metadata = null;
+
     const WORDS_ELEMENT = '<words>';
+
+    public function __construct()
+    {
+        $this->metadata = new Metadata();
+    }
 
     /**
      * @param $content
@@ -55,11 +65,11 @@ class Dictionary
     public function loadFromFile($path)
     {
         $serialized = file_get_contents($path);
-        $data       = unserialize($serialized);
+        $data = unserialize($serialized);
 
-        $this->samples   = $data['samples'];
+        $this->samples = $data['samples'];
         $this->structure = $data['structure'];
-        $this->metadata  = $data['metadata'];
+        $this->metadata = $data['metadata'];
 
         return $this;
     }
@@ -70,8 +80,8 @@ class Dictionary
      */
     public function compile($depth = self::DEPTH)
     {
-        $text      = implode("\n", $this->samples);
-        $text      = $this->preProcess($text);
+        $text = implode("\n", $this->samples);
+        $text = $this->preProcess($text);
         $sentences = $this->splitToSentences($text);
 
         foreach ($sentences as $sentence) {
@@ -79,26 +89,14 @@ class Dictionary
 
             $words = $this->splitToWords($sentence);
             foreach ($words as $word) {
-                $canonized   = $this->canonizeWord($word);
-                $firstLetter = mb_substr($word, 0, 1, self::ENCODING);
-                $isUpperCase = $firstLetter === mb_strtoupper($firstLetter, self::ENCODING);
-                $isLowerCase = $firstLetter === mb_strtolower($firstLetter, self::ENCODING);
+                $word = new Word($word);
+                $canonized = $word->canonized();
 
                 // @todo handle case when all chars are upper
 
                 // add metadata
 
-                if (!isset($this->metadata[$canonized])) {
-                    $this->metadata[$canonized] = [
-                        'upperCaseCount' => $isUpperCase ? 1 : 0,
-                        'lowerCaseCount' => $isLowerCase ? 1 : 0,
-                        'count'          => 1,
-                    ];
-                } else {
-                    $this->metadata[$canonized]['upperCaseCount'] += $isUpperCase ? 1 : 0;
-                    $this->metadata[$canonized]['lowerCaseCount'] += $isLowerCase ? 1 : 0;
-                    $this->metadata[$canonized]['count'] += 1;
-                }
+                $this->metadata->addWord($word);
 
                 // update previous words
 
@@ -114,26 +112,6 @@ class Dictionary
         }
 
         return $this;
-    }
-
-    public function getMetadata($word)
-    {
-        $canonized = $this->canonizeWord($word);
-
-        if (!isset($this->metadata[$canonized])) {
-            throw new \Exception('Word ' . $canonized . ' not found');
-        }
-
-        return $this->metadata[$canonized];
-    }
-
-    /**
-     * @param string $word
-     * @return string
-     */
-    public function canonizeWord($word)
-    {
-        return mb_strtolower($word, self::ENCODING);
     }
 
     /**
@@ -168,6 +146,7 @@ class Dictionary
      */
     protected function preProcess($text)
     {
+        $text = preg_replace('/[<>\[\]()]/u', '', $text); // remove some chars
         $text = preg_replace('/(\n|\r){2,}/u', '\1', $text); // remove multiple EOLs
         $text = preg_replace('/(\n|\r)(?! *[a-zа-я])/u', '. ', $text); // split sentences on multiple lines
         $text = preg_replace('/(\n|\r)/u', ' ', $text); // replace EOLs with spaces

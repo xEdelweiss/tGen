@@ -10,6 +10,7 @@ namespace xedelweiss\tGen\Generator;
 use xedelweiss\tGen\Dictionary;
 use xedelweiss\tGen\Sentence;
 use xedelweiss\tGen\SentenceElement;
+use xedelweiss\tGen\Word;
 
 /**
  * Class Simple
@@ -53,7 +54,7 @@ class Simple extends Base
 
         while ($result->wordsCount() < $wordsCount) {
             $canonized = $this->getNext($previousWords);
-            $metadata = $this->dictionary->getMetadata($canonized);
+            $metadata = $this->dictionary->metadata->getWordMetadata(new Word($canonized));
             $word = ($metadata['upperCaseCount'] > $metadata['lowerCaseCount']) || ($result->wordsCount() == 0)
                 ? mb_convert_case($canonized, MB_CASE_TITLE, Dictionary::ENCODING)
                 : $canonized;
