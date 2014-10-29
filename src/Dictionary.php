@@ -20,8 +20,8 @@ class Dictionary
     const ENCODING = 'UTF-8';
 
     protected $samples = [];
-    protected $structure = [];
-    protected $metadata = [];
+    public $structure = [];
+    public $metadata = [];
     const WORDS_ELEMENT = '<words>';
 
     /**
@@ -114,28 +114,6 @@ class Dictionary
         return $this;
     }
 
-    /**
-     * @param array $path
-     * @return string
-     */
-    public function getNext($path = [])
-    {
-        $currentElement = &$this->structure;
-        foreach ($path as $pathElement) {
-            if (!isset($currentElement[$pathElement]) || !isset($currentElement[$pathElement][self::WORDS_ELEMENT])) {
-                array_shift($path);
-                return $this->getNext($path);
-            }
-
-            $currentElement = &$currentElement[$pathElement];
-        }
-
-        $words = $currentElement[self::WORDS_ELEMENT];
-        $index = array_rand($words, 1);
-
-        return $words[$index];
-    }
-
     public function getMetadata($word)
     {
         $canonized = $this->canonizeWord($word);
@@ -151,7 +129,7 @@ class Dictionary
      * @param string $word
      * @return string
      */
-    protected function canonizeWord($word)
+    public function canonizeWord($word)
     {
         return mb_strtolower($word, self::ENCODING);
     }
