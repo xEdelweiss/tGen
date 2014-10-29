@@ -11,6 +11,7 @@ use xedelweiss\tGen\Dictionary;
 use xedelweiss\tGen\Sentence;
 use xedelweiss\tGen\SentenceElement;
 use xedelweiss\tGen\Word;
+use xedelweiss\tGen\WordsSet;
 
 /**
  * Class Simple
@@ -37,9 +38,9 @@ class Simple extends Base
         }
 
         $words = $currentElement[Dictionary::WORDS_ELEMENT];
-        $index = array_rand($words, 1);
+        $wordsSet = new WordsSet($words);
 
-        return $words[$index];
+        return $wordsSet->randomWord();
     }
 
     /**
