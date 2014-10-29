@@ -143,14 +143,17 @@ class Dictionary
     {
         $currentElement = &$this->structure;
         foreach ($path as $pathElement) {
+            // if no <words> container - create
             if (!isset($currentElement[self::WORDS_ELEMENT])) {
                 $currentElement[self::WORDS_ELEMENT] = [];
             }
 
+            // if no pathElement sub-structure
             if (!isset($currentElement[$pathElement])) {
                 $currentElement[$pathElement] = [];
             }
 
+            // if no pathElement in <words>
             if (!in_array($pathElement, $currentElement[self::WORDS_ELEMENT])) {
                 $currentElement[self::WORDS_ELEMENT][] = $pathElement;
             }
@@ -165,7 +168,7 @@ class Dictionary
      */
     protected function preProcess($text)
     {
-        $text = preg_replace('/(\n|\r){2,}/u', '\1', $text); // remove multipe EOLs
+        $text = preg_replace('/(\n|\r){2,}/u', '\1', $text); // remove multiple EOLs
         $text = preg_replace('/(\n|\r)(?! *[a-zа-я])/u', '. ', $text); // split sentences on multiple lines
         $text = preg_replace('/(\n|\r)/u', ' ', $text); // replace EOLs with spaces
         $text = preg_replace('/ +/u', ' ', $text); // replace multiple spaces

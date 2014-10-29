@@ -33,7 +33,7 @@ if (file_exists('./compiled/dictionary.tgd')) {
 
 // init generator
 
-$generator = new xedelweiss\tGen\Generator();
+$generator = new xedelweiss\tGen\Generator\Simple();
 $generator->setDictionary($dictionary);
 
 // use generator

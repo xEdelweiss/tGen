@@ -5,32 +5,20 @@
  * Time: 15:29
  */
 
-namespace xedelweiss\tGen;
+namespace xedelweiss\tGen\Generator;
+
+use xedelweiss\tGen\Dictionary;
+use xedelweiss\tGen\Sentence;
+use xedelweiss\tGen\SentenceElement;
 
 /**
- * Class Generator
+ * Class Simple
  *
- * @package xedelweiss\tGen
+ * @package xedelweiss\tGen\Generator
  * @author Michael Sverdlikovsky <michael.sverdlikovsky@ab-soft.net>
  */
-class Generator
+class Simple extends Base
 {
-    /**
-     * @var Dictionary
-     */
-    protected $dictionary = NULL;
-
-    /**
-     * @param Dictionary $dictionary
-     * @return $this
-     */
-    public function setDictionary(Dictionary $dictionary)
-    {
-        $this->dictionary = $dictionary;
-
-        return $this;
-    }
-
     /**
      * @param array $path
      * @return string
