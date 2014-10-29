@@ -1,0 +1,17 @@
+{
+    "name": "xedelweiss/t-gen",
+    "authors": [
+        {
+            "name": "Michael Sverdlikovsky",
+            "email": "xedelweiss@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "xedelweiss\\tGen\\": "src"
+        }
+    }
+}
