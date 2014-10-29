@@ -90,23 +90,19 @@ class Dictionary
             $words = $this->splitToWords($sentence);
             foreach ($words as $word) {
                 $word = new Word($word);
-                $canonized = $word->canonized();
 
                 // @todo handle case when all chars are upper
 
                 // add metadata
-
                 $this->metadata->addWord($word);
 
                 // update previous words
-
-                $previousWords[] = $canonized;
+                $previousWords[] = $word->canonized();
                 if (count($previousWords) > $depth) {
                     array_shift($previousWords);
                 }
 
                 // add structure
-
                 $this->addToStructure($previousWords);
             }
         }

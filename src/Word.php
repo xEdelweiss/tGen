@@ -8,41 +8,77 @@
 
 namespace xedelweiss\tGen;
 
+/**
+ * Class Word
+ * Represents info about word without statistical data
+ *
+ * @package xedelweiss\tGen
+ */
 class Word
 {
     const ENCODING = 'UTF-8';
     const VOWELS = 'аоэиуыеёюя';
+    const CASE_ORIGINAL = 'original';
+    const CASE_UPPER = 'upper';
+    const CASE_LOWER = 'lower';
 
-    protected $word = null;
+    /**
+     * @var string
+     */
+    protected $value = null;
 
     public function __construct($word)
     {
         if (!is_string($word)) {
             throw new \Exception('$word must be string, ' . gettype($word) . ' given');
         }
-        $this->word = $word;
+        $this->value = $word;
     }
 
+    /**
+     * @return string
+     */
     public function canonized()
     {
-        return mb_strtolower($this->word, self::ENCODING);
+        return mb_strtolower($this->value, self::ENCODING);
     }
 
-    public function value()
+    /**
+     * @param string $case
+     * @return string
+     */
+    public function value($case = self::CASE_ORIGINAL)
     {
-        return $this->word;
+        $result = $this->value;
+
+        if ($case == self::CASE_UPPER) {
+            $result = mb_convert_case($result, MB_CASE_TITLE, self::ENCODING);
+        } elseif ($case == self::CASE_LOWER) {
+            $result = mb_strtolower($result, self::ENCODING);
+        }
+
+        return $result;
     }
 
+    /**
+     * @return bool
+     */
     public function isUpperCase()
     {
         return $this->getFirstLetter() === mb_strtoupper($this->getFirstLetter(), self::ENCODING);
     }
 
+    /**
+     * @return bool
+     */
     public function isLowerCase()
     {
         return $this->getFirstLetter() === mb_strtolower($this->getFirstLetter(), self::ENCODING);
     }
 
+    /**
+     * @return int
+     */
     public function getSyllableCount()
     {
         $word = $this->canonized();
@@ -53,8 +89,11 @@ class Word
         return mb_strlen($onlyVowels, self::ENCODING);
     }
 
+    /**
+     * @return string
+     */
     protected function getFirstLetter()
     {
-        return mb_substr($this->word, 0, 1, self::ENCODING);
+        return mb_substr($this->value, 0, 1, self::ENCODING);
     }
 } 

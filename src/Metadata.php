@@ -9,7 +9,8 @@
 namespace xedelweiss\tGen;
 
 
-class Metadata {
+class Metadata
+{
 
     protected $data = [];
 
@@ -19,22 +20,20 @@ class Metadata {
     public function addWord(Word $word)
     {
         if (!$this->isWordExists($word)) {
-            $this->data[$word->canonized()] = [
-                'upperCaseCount' => $word->isUpperCase() ? 1 : 0,
-                'lowerCaseCount' => $word->isLowerCase() ? 1 : 0,
-                'count'          => 1,
-            ];
+            $wordMetadata = new MetadataElement($word);
+            $this->data[$word->canonized()] = $wordMetadata;
         } else {
-            $this->data[$word->canonized()]['upperCaseCount'] += $word->isUpperCase() ? 1 : 0;
-            $this->data[$word->canonized()]['lowerCaseCount'] += $word->isLowerCase() ? 1 : 0;
-            $this->data[$word->canonized()]['count'] += 1;
-            // а,   о,   э,   и,   у,   ы,   е,   ё,   ю, я
+            $wordMetadata = $this->getWordMetadata($word);
+            $wordMetadata->addNewEncounter($word);
         }
+
+        $this->setWordMetadata($wordMetadata);
     }
 
     /**
      * @param Word $word
      * @throws \Exception
+     * @return MetadataElement
      */
     public function getWordMetadata(Word $word)
     {
@@ -43,6 +42,12 @@ class Metadata {
         }
 
         return $this->data[$word->canonized()];
+    }
+
+    protected function setWordMetadata(MetadataElement $metadataElement)
+    {
+        $word = $metadataElement->word();
+        $this->data[$word->canonized()] = $metadataElement;
     }
 
     /**

@@ -55,9 +55,9 @@ class Simple extends Base
         while ($result->wordsCount() < $wordsCount) {
             $canonized = $this->getNext($previousWords);
             $metadata = $this->dictionary->metadata->getWordMetadata(new Word($canonized));
-            $word = ($metadata['upperCaseCount'] > $metadata['lowerCaseCount']) || ($result->wordsCount() == 0)
-                ? mb_convert_case($canonized, MB_CASE_TITLE, Dictionary::ENCODING)
-                : $canonized;
+            $word = $metadata->isUpperCase() || ($result->wordsCount() == 0)
+                  ? $metadata->word()->value(Word::CASE_UPPER)
+                  : $metadata->word()->value(Word::CASE_LOWER);
 
             $result->addWord($word);
 
