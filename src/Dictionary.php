@@ -206,6 +206,8 @@ class Dictionary
 
         $words = preg_split('/ /ui', $text);
 
+        $words = array_filter($words);
+
         return $words;
     }
 
