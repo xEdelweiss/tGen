@@ -82,10 +82,13 @@ class Dictionary
      */
     public function compile($depth = self::DEPTH)
     {
+        // a b c d e
         $text = implode("\n", $this->samples);
         $text = $this->preProcess($text);
         $sentences = $this->splitToSentences($text);
 
+        // a b c e
+        // b c d e
         foreach ($sentences as $sentence) {
             $previousWords = [];
 
@@ -105,6 +108,14 @@ class Dictionary
                 }
 
                 // add structure
+                $this->addToStructure($previousWords);
+            }
+
+            // c d e
+            // d e
+            while (count($previousWords) > 1) {
+                array_shift($previousWords);
+
                 $this->addToStructure($previousWords);
             }
         }
