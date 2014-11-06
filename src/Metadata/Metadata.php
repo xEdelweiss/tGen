@@ -7,6 +7,7 @@
  */
 
 namespace xedelweiss\tGen\Metadata;
+
 use xedelweiss\tGen\Word;
 
 
@@ -37,6 +38,15 @@ class Metadata
 
     /**
      * @param Word $word
+     * @return bool
+     */
+    protected function isWordExists(Word $word)
+    {
+        return isset($this->data[$word->canonized()]);
+    }
+
+    /**
+     * @param Word $word
      * @throws \Exception
      * @return Element
      */
@@ -50,14 +60,6 @@ class Metadata
     }
 
     /**
-     * @return array
-     */
-    public function getAllWords()
-    {
-        return array_keys($this->data);
-    }
-
-    /**
      * @param Element $metadataElement
      */
     protected function setWordMetadata(Element $metadataElement)
@@ -67,11 +69,10 @@ class Metadata
     }
 
     /**
-     * @param Word $word
-     * @return bool
+     * @return array
      */
-    protected function isWordExists(Word $word)
+    public function getAllWords()
     {
-        return isset($this->data[$word->canonized()]);
+        return array_keys($this->data);
     }
 }

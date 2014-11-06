@@ -86,19 +86,19 @@ class WordsSet
     }
 
     /**
-     * @return int
-     */
-    public function count()
-    {
-        return count($this->words);
-    }
-
-    /**
      * @return bool
      */
     public function isEmpty()
     {
         return $this->count() == 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->words);
     }
 
     /**

@@ -17,12 +17,13 @@ use xedelweiss\tGen\WordsSet;
  * @package xedelweiss\tGen\Generator
  * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
-abstract class Base {
+abstract class Base
+{
 
     /**
      * @var Dictionary
      */
-    protected $dictionary = NULL;
+    protected $dictionary = null;
 
     /**
      * @param Dictionary $dictionary

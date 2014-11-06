@@ -21,16 +21,14 @@ class Dictionary
 {
     const ENCODING = 'UTF-8';
     const DEPTH = 3;
-
-    protected $samples = [];
+    const WORDS_ELEMENT = '<words>';
     public $structure = [];
 
     /**
      * @var Metadata
      */
     public $metadata = null;
-
-    const WORDS_ELEMENT = '<words>';
+    protected $samples = [];
 
     public function __construct()
     {
@@ -54,7 +52,11 @@ class Dictionary
      */
     public function saveToFile($path)
     {
-        $serialized = serialize(['samples' => $this->samples, 'structure' => $this->structure, 'metadata' => $this->metadata]);
+        $serialized = serialize([
+                'samples' => $this->samples,
+                'structure' => $this->structure,
+                'metadata' => $this->metadata
+            ]);
         file_put_contents($path, $serialized);
 
         return $this;
@@ -124,32 +126,6 @@ class Dictionary
     }
 
     /**
-     * @param array $path
-     */
-    protected function addToStructure($path)
-    {
-        $currentElement = &$this->structure;
-        foreach ($path as $pathElement) {
-            // if no <words> container - create
-            if (!isset($currentElement[self::WORDS_ELEMENT])) {
-                $currentElement[self::WORDS_ELEMENT] = [];
-            }
-
-            // if no pathElement sub-structure
-            if (!isset($currentElement[$pathElement])) {
-                $currentElement[$pathElement] = [];
-            }
-
-            // if no pathElement in <words>
-            if (!in_array($pathElement, $currentElement[self::WORDS_ELEMENT])) {
-                $currentElement[self::WORDS_ELEMENT][] = $pathElement;
-            }
-
-            $currentElement = &$currentElement[$pathElement];
-        }
-    }
-
-    /**
      * @param $text
      * @return string
      */
@@ -176,7 +152,8 @@ class Dictionary
         $sentences = array_filter(
             $sentences,
             function ($item) {
-                return (!empty($item) && mb_substr_count($item, ' ', self::ENCODING) > MINIMAL_WORDS_IN_SAMPLE_SENTENCE - 1);
+                return (!empty($item) && mb_substr_count($item, ' ',
+                        self::ENCODING) > MINIMAL_WORDS_IN_SAMPLE_SENTENCE - 1);
             }
         );
 
@@ -197,6 +174,32 @@ class Dictionary
         $words = array_filter($words);
 
         return $words;
+    }
+
+    /**
+     * @param array $path
+     */
+    protected function addToStructure($path)
+    {
+        $currentElement = &$this->structure;
+        foreach ($path as $pathElement) {
+            // if no <words> container - create
+            if (!isset($currentElement[self::WORDS_ELEMENT])) {
+                $currentElement[self::WORDS_ELEMENT] = [];
+            }
+
+            // if no pathElement sub-structure
+            if (!isset($currentElement[$pathElement])) {
+                $currentElement[$pathElement] = [];
+            }
+
+            // if no pathElement in <words>
+            if (!in_array($pathElement, $currentElement[self::WORDS_ELEMENT])) {
+                $currentElement[self::WORDS_ELEMENT][] = $pathElement;
+            }
+
+            $currentElement = &$currentElement[$pathElement];
+        }
     }
 
 }

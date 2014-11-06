@@ -36,14 +36,6 @@ class Word
     }
 
     /**
-     * @return string
-     */
-    public function canonized()
-    {
-        return mb_strtolower($this->value, self::ENCODING);
-    }
-
-    /**
      * @param string $case
      * @return string
      */
@@ -66,6 +58,14 @@ class Word
     public function isUpperCase()
     {
         return $this->getFirstLetter() === mb_strtoupper($this->getFirstLetter(), self::ENCODING);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFirstLetter()
+    {
+        return mb_substr($this->value, 0, 1, self::ENCODING);
     }
 
     /**
@@ -93,8 +93,8 @@ class Word
     /**
      * @return string
      */
-    protected function getFirstLetter()
+    public function canonized()
     {
-        return mb_substr($this->value, 0, 1, self::ENCODING);
+        return mb_strtolower($this->value, self::ENCODING);
     }
 } 

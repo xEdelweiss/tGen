@@ -39,7 +39,7 @@ class Container
         $result = '';
 
         /** @var Element $previousItem */
-        $previousItem = NULL;
+        $previousItem = null;
         foreach ($this->structure as $item) {
             $addSpace = false;
 
@@ -83,21 +83,6 @@ class Container
     }
 
     /**
-     * @return int
-     */
-    public function syllableCount()
-    {
-        $words = $this->getWords();
-        $result = 0;
-
-        foreach ($words as $word) {
-            $result += (new Word($word))->getSyllableCount();
-        }
-
-        return $result;
-    }
-
-    /**
      * Return only words
      * @return array
      */
@@ -109,6 +94,21 @@ class Container
             if ($element->type == Element::WORD) {
                 $result[] = $element->value;
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function syllableCount()
+    {
+        $words = $this->getWords();
+        $result = 0;
+
+        foreach ($words as $word) {
+            $result += (new Word($word))->getSyllableCount();
         }
 
         return $result;
@@ -151,9 +151,9 @@ class Container
     public function getLastElement()
     {
         if (empty($this->structure)) {
-            return new Element(Element::UNDEFINED, NULL);
+            return new Element(Element::UNDEFINED, null);
         }
 
-        return $this->structure[count($this->structure)-1];
+        return $this->structure[count($this->structure) - 1];
     }
 }

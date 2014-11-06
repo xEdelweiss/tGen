@@ -21,8 +21,8 @@ class Element
     const POSTSPACED_ELEMENT = 'postspaced';
     const UNDEFINED = 'undefined';
 
-    public $type = NULL;
-    public $value = NULL;
+    public $type = null;
+    public $value = null;
 
     /**
      * @param $type
@@ -30,7 +30,7 @@ class Element
      */
     public function __construct($type, $value)
     {
-        $this->type  = $type;
+        $this->type = $type;
         $this->value = $value;
     }
 

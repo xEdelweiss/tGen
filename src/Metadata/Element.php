@@ -7,6 +7,7 @@
  */
 
 namespace xedelweiss\tGen\Metadata;
+
 use xedelweiss\tGen\Word;
 
 /**
@@ -52,16 +53,16 @@ class Element
     /**
      * @return bool
      */
-    public function isUpperCase()
+    public function isLowerCase()
     {
-        return $this->upperCaseCount > $this->lowerCaseCount;
+        return !$this->isUpperCase();
     }
 
     /**
      * @return bool
      */
-    public function isLowerCase()
+    public function isUpperCase()
     {
-        return !$this->isUpperCase();
+        return $this->upperCaseCount > $this->lowerCaseCount;
     }
 }

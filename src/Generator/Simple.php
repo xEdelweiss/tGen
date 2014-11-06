@@ -23,28 +23,6 @@ class Simple extends Base
     const MINIMAL_SYLLABLE_COUNT_IN_LAST_WORD = 1;
 
     /**
-     * @param array $path
-     * @return string
-     */
-    public function getNext($path = [])
-    {
-        $currentElement = &$this->dictionary->structure;
-        foreach ($path as $pathElement) {
-            if (!isset($currentElement[$pathElement]) || !isset($currentElement[$pathElement][Dictionary::WORDS_ELEMENT])) {
-                array_shift($path);
-                return $this->getNext($path);
-            }
-
-            $currentElement = &$currentElement[$pathElement];
-        }
-
-        $words = $currentElement[Dictionary::WORDS_ELEMENT];
-        $wordsSet = new WordsSet($words);
-
-        return $wordsSet->randomWord();
-    }
-
-    /**
      * @param int $wordsCount
      * @param int $depth
      * @throws \Exception
@@ -89,6 +67,28 @@ class Simple extends Base
         $result->addElement(Sentence\Element::POSTSPACED_ELEMENT, '.', Sentence\Container::ELEMENT_ADD_REPLACE);
 
         return $result;
+    }
+
+    /**
+     * @param array $path
+     * @return string
+     */
+    public function getNext($path = [])
+    {
+        $currentElement = &$this->dictionary->structure;
+        foreach ($path as $pathElement) {
+            if (!isset($currentElement[$pathElement]) || !isset($currentElement[$pathElement][Dictionary::WORDS_ELEMENT])) {
+                array_shift($path);
+                return $this->getNext($path);
+            }
+
+            $currentElement = &$currentElement[$pathElement];
+        }
+
+        $words = $currentElement[Dictionary::WORDS_ELEMENT];
+        $wordsSet = new WordsSet($words);
+
+        return $wordsSet->randomWord();
     }
 
     /**
