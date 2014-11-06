@@ -13,7 +13,7 @@ const MINIMAL_WORDS_IN_SAMPLE_SENTENCE = 5;
  * Class Dictionary
  *
  * @package xedelweiss\tGen
- * @author Michael Sverdlikovsky <michael.sverdlikovsky@ab-soft.net>
+ * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
 class Dictionary
 {

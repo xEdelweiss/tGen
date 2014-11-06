@@ -10,6 +10,12 @@ namespace xedelweiss\tGen\Generator;
 
 use xedelweiss\tGen\Dictionary;
 
+/**
+ * Class Base
+ *
+ * @package xedelweiss\tGen\Generator
+ * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
+ */
 class Base {
 
     /**

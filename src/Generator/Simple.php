@@ -17,7 +17,7 @@ use xedelweiss\tGen\WordsSet;
  * Class Simple
  *
  * @package xedelweiss\tGen\Generator
- * @author Michael Sverdlikovsky <michael.sverdlikovsky@ab-soft.net>
+ * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
 class Simple extends Base
 {

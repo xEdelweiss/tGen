@@ -11,7 +11,7 @@ namespace xedelweiss\tGen;
  * Class Sentence
  *
  * @package xedelweiss\tGen
- * @author Michael Sverdlikovsky <michael.sverdlikovsky@ab-soft.net>
+ * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
 class Sentence
 {
