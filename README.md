@@ -2,5 +2,5 @@
 
 Text genration experiment
 
-# Links:
+# Links
  - http://logos-book.narod.ru/philosophy/
