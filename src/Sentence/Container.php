@@ -7,6 +7,8 @@
 
 namespace xedelweiss\tGen\Sentence;
 
+use xedelweiss\tGen\Word;
+
 /**
  * Class Container
  *
@@ -18,10 +20,16 @@ class Container
     const ELEMENT_ADD_FREE = 'free';
     const ELEMENT_ADD_SINGLE = 'single';
     const ELEMENT_ADD_REPLACE = 'replace';
+
     /**
      * @var Element[]
      */
     protected $structure = [];
+
+    public function clear()
+    {
+        $this->structure = [];
+    }
 
     /**
      * @return string

@@ -84,4 +84,12 @@ class WordsSet
     {
         return $this->words;
     }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->words);
+    }
 } 

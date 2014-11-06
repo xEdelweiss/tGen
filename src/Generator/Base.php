@@ -9,6 +9,7 @@
 namespace xedelweiss\tGen\Generator;
 
 use xedelweiss\tGen\Dictionary;
+use xedelweiss\tGen\WordsSet;
 
 /**
  * Class Base
@@ -16,7 +17,7 @@ use xedelweiss\tGen\Dictionary;
  * @package xedelweiss\tGen\Generator
  * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
-class Base {
+abstract class Base {
 
     /**
      * @var Dictionary
@@ -32,5 +33,37 @@ class Base {
         $this->dictionary = $dictionary;
 
         return $this;
+    }
+
+    /**
+     * @param $path
+     * @return string|WordsSet
+     */
+    public function getNextWordsSet($path)
+    {
+        $currentElement = &$this->dictionary->structure;
+        foreach ($path as $pathElement) {
+            if (!isset($currentElement[$pathElement]) || !isset($currentElement[$pathElement][Dictionary::WORDS_ELEMENT])) {
+                return new WordsSet([]);
+            }
+
+            $currentElement = &$currentElement[$pathElement];
+        }
+
+        $words = $currentElement[Dictionary::WORDS_ELEMENT];
+        $wordsSet = new WordsSet($words);
+
+        return $wordsSet;
+    }
+
+    /**
+     * @param $path
+     * @return mixed
+     */
+    public function simplify($path)
+    {
+        array_shift($path);
+
+        return $path;
     }
 } 

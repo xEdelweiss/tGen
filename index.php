@@ -2,6 +2,7 @@
 
 ini_set('memory_limit', '1024M');
 set_time_limit(0);
+$debug = TRUE;
 
 require './vendor/autoload.php';
 
@@ -20,7 +21,7 @@ foreach (new FilesystemIterator('./samples/') as $file) {
 
 $dictionary = new xedelweiss\tGen\Dictionary();
 
-if (file_exists('./compiled/dictionary.tgd')) {
+if (!$debug && file_exists('./compiled/dictionary.tgd')) {
     $dictionary->loadFromFile('./compiled/dictionary.tgd');
 } else {
     foreach ($samples as $sampleName) {
