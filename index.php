@@ -2,7 +2,7 @@
 
 ini_set('memory_limit', '1024M');
 set_time_limit(0);
-$debug = TRUE;
+$debug = FALSE;
 
 require './vendor/autoload.php';
 
