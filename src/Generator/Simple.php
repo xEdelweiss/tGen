@@ -90,4 +90,17 @@ class Simple extends Base
 
         return $result;
     }
+
+    /**
+     * @param $path
+     * @return mixed
+     *
+     * @todo remove
+     */
+    public function simplify($path)
+    {
+        array_pop($path);
+
+        return $path;
+    }
 }
