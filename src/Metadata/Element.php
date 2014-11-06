@@ -6,27 +6,34 @@
  * Time: 22:09
  */
 
-namespace xedelweiss\tGen;
+namespace xedelweiss\tGen\Metadata;
+use xedelweiss\tGen\Word;
 
 /**
- * Class MetadataElement
+ * Class Element
  * Represents info about word with statistical data
  *
- * @package xedelweiss\tGen
+ * @package xedelweiss\tGen\Metadata
  */
-class MetadataElement
+class Element
 {
     protected $canonized = null;
     protected $upperCaseCount = 0;
     protected $lowerCaseCount = 0;
     protected $countOverall = 0;
 
+    /**
+     * @param Word $word
+     */
     public function __construct(Word $word)
     {
         $this->canonized = $word->canonized();
         $this->addNewEncounter($word);
     }
 
+    /**
+     * @param Word $word
+     */
     public function addNewEncounter(Word $word)
     {
         $this->upperCaseCount += (int)$word->isUpperCase();
@@ -42,11 +49,17 @@ class MetadataElement
         return new Word($this->canonized);
     }
 
+    /**
+     * @return bool
+     */
     public function isUpperCase()
     {
         return $this->upperCaseCount > $this->lowerCaseCount;
     }
 
+    /**
+     * @return bool
+     */
     public function isLowerCase()
     {
         return !$this->isUpperCase();

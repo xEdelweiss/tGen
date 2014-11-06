@@ -6,9 +6,14 @@
  * Time: 21:36
  */
 
-namespace xedelweiss\tGen;
+namespace xedelweiss\tGen\Metadata;
+use xedelweiss\tGen\Word;
 
 
+/**
+ * Class Metadata
+ * @package xedelweiss\tGen\Metadata
+ */
 class Metadata
 {
 
@@ -20,7 +25,7 @@ class Metadata
     public function addWord(Word $word)
     {
         if (!$this->isWordExists($word)) {
-            $wordMetadata = new MetadataElement($word);
+            $wordMetadata = new Element($word);
             $this->data[$word->canonized()] = $wordMetadata;
         } else {
             $wordMetadata = $this->getWordMetadata($word);
@@ -33,7 +38,7 @@ class Metadata
     /**
      * @param Word $word
      * @throws \Exception
-     * @return MetadataElement
+     * @return Element
      */
     public function getWordMetadata(Word $word)
     {
@@ -52,7 +57,10 @@ class Metadata
         return array_keys($this->data);
     }
 
-    protected function setWordMetadata(MetadataElement $metadataElement)
+    /**
+     * @param Element $metadataElement
+     */
+    protected function setWordMetadata(Element $metadataElement)
     {
         $word = $metadataElement->word();
         $this->data[$word->canonized()] = $metadataElement;

@@ -7,6 +7,8 @@
 
 namespace xedelweiss\tGen;
 
+use xedelweiss\tGen\Metadata\Metadata;
+
 const MINIMAL_WORDS_IN_SAMPLE_SENTENCE = 5;
 
 /**
