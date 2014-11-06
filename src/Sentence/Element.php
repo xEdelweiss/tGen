@@ -5,16 +5,16 @@
  * Time: 15:45
  */
 
-namespace xedelweiss\tGen;
+namespace xedelweiss\tGen\Sentence;
 
 
 /**
- * Class SentenceElement
+ * Class Element
  *
  * @package xedelweiss\tGen
  * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
-class SentenceElement
+class Element
 {
     const WORD = 'word';
     const BISPACED_ELEMENT = 'bispaced';
@@ -39,7 +39,7 @@ class SentenceElement
      */
     public function hasSpaceBefore()
     {
-        return in_array($this->type, [SentenceElement::WORD, SentenceElement::BISPACED_ELEMENT]);
+        return in_array($this->type, [Element::WORD, Element::BISPACED_ELEMENT]);
     }
 
     /**
@@ -47,6 +47,6 @@ class SentenceElement
      */
     public function hasSpaceAfter()
     {
-        return in_array($this->type, [SentenceElement::WORD, SentenceElement::BISPACED_ELEMENT, SentenceElement::POSTSPACED_ELEMENT]);
+        return in_array($this->type, [Element::WORD, Element::BISPACED_ELEMENT, Element::POSTSPACED_ELEMENT]);
     }
 }

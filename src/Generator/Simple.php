@@ -9,7 +9,6 @@ namespace xedelweiss\tGen\Generator;
 
 use xedelweiss\tGen\Dictionary;
 use xedelweiss\tGen\Sentence;
-use xedelweiss\tGen\SentenceElement;
 use xedelweiss\tGen\Word;
 use xedelweiss\tGen\WordsSet;
 
@@ -49,11 +48,11 @@ class Simple extends Base
      * @param int $wordsCount
      * @param int $depth
      * @throws \Exception
-     * @return Sentence
+     * @return Sentence\Container
      */
     public function sentence($wordsCount = 5, $previousWords = [], $depth = Dictionary::DEPTH)
     {
-        $result = new Sentence();
+        $result = new Sentence\Container();
 
         while ($result->wordsCount() < $wordsCount) {
             $canonized = $this->getNext($previousWords);
@@ -87,7 +86,7 @@ class Simple extends Base
             }
         }
 
-        $result->addElement(SentenceElement::POSTSPACED_ELEMENT, '.', Sentence::ELEMENT_ADD_REPLACE);
+        $result->addElement(Sentence\Element::POSTSPACED_ELEMENT, '.', Sentence\Container::ELEMENT_ADD_REPLACE);
 
         return $result;
     }

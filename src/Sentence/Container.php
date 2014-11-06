@@ -5,21 +5,21 @@
  * Time: 15:32
  */
 
-namespace xedelweiss\tGen;
+namespace xedelweiss\tGen\Sentence;
 
 /**
- * Class Sentence
+ * Class Container
  *
  * @package xedelweiss\tGen
  * @author Michael Sverdlikovsky <xedelweiss@gmail.com>
  */
-class Sentence
+class Container
 {
     const ELEMENT_ADD_FREE = 'free';
     const ELEMENT_ADD_SINGLE = 'single';
     const ELEMENT_ADD_REPLACE = 'replace';
     /**
-     * @var SentenceElement[]
+     * @var Element[]
      */
     protected $structure = [];
 
@@ -30,7 +30,7 @@ class Sentence
     {
         $result = '';
 
-        /** @var SentenceElement $previousItem */
+        /** @var Element $previousItem */
         $previousItem = NULL;
         foreach ($this->structure as $item) {
             $addSpace = false;
@@ -53,7 +53,7 @@ class Sentence
 
             $value = $item->value;
 
-            if (empty($result) && $item->type == SentenceElement::WORD) {
+            if (empty($result) && $item->type == Element::WORD) {
                 $value = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
             }
 
@@ -74,6 +74,9 @@ class Sentence
         return count($this->getWords());
     }
 
+    /**
+     * @return int
+     */
     public function syllableCount()
     {
         $words = $this->getWords();
@@ -95,7 +98,7 @@ class Sentence
         $result = [];
 
         foreach ($this->structure as $element) {
-            if ($element->type == SentenceElement::WORD) {
+            if ($element->type == Element::WORD) {
                 $result[] = $element->value;
             }
         }
@@ -109,7 +112,7 @@ class Sentence
      */
     public function addWord($word)
     {
-        $this->addElement(SentenceElement::WORD, $word);
+        $this->addElement(Element::WORD, $word);
 
         return $this;
     }
@@ -122,25 +125,25 @@ class Sentence
      */
     public function addElement($type, $value, $mode = self::ELEMENT_ADD_FREE)
     {
-        if ($mode == self::ELEMENT_ADD_SINGLE && $this->getLastElement()->type !== SentenceElement::WORD) {
+        if ($mode == self::ELEMENT_ADD_SINGLE && $this->getLastElement()->type !== Element::WORD) {
             return $this;
         }
 
-        if ($mode == self::ELEMENT_ADD_REPLACE && $this->getLastElement()->type !== SentenceElement::WORD) {
+        if ($mode == self::ELEMENT_ADD_REPLACE && $this->getLastElement()->type !== Element::WORD) {
             array_pop($this->structure);
         }
 
-        $this->structure[] = new SentenceElement($type, $value);
+        $this->structure[] = new Element($type, $value);
         return $this;
     }
 
     /**
-     * @return SentenceElement
+     * @return Element
      */
     public function getLastElement()
     {
         if (empty($this->structure)) {
-            return new SentenceElement(SentenceElement::UNDEFINED, NULL);
+            return new Element(Element::UNDEFINED, NULL);
         }
 
         return $this->structure[count($this->structure)-1];
