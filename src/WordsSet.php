@@ -92,4 +92,23 @@ class WordsSet
     {
         return count($this->words);
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->count() == 0;
+    }
+
+    /**
+     * @param array $wordsToSkip
+     * @return WordsSet
+     */
+    public function without($wordsToSkip)
+    {
+        $match = array_diff($this->words, $wordsToSkip);
+
+        return new WordsSet($match);
+    }
 } 
