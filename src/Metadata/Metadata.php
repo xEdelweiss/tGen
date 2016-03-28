@@ -81,7 +81,7 @@ class Metadata
         $result = [];
 
         array_map(function(Element $word) use (&$result){
-            $result[$word->word()->value()] = $word->getCountOverall();
+            $result[$word->word()->value($word->isUpperCase() ? Word::CASE_UPPER : Word::CASE_LOWER)] = $word->getCountOverall();
         }, $this->data);
 
         arsort($result);
