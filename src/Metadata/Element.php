@@ -65,4 +65,12 @@ class Element
     {
         return $this->upperCaseCount > $this->lowerCaseCount;
     }
+
+    /**
+     * @return int
+     */
+    public function getCountOverall()
+    {
+        return $this->countOverall;
+    }
 }

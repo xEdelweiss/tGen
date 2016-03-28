@@ -17,7 +17,7 @@ use xedelweiss\tGen\Word;
  */
 class Metadata
 {
-
+    /** @var Element[] */
     protected $data = [];
 
     /**
@@ -74,5 +74,18 @@ class Metadata
     public function getAllWords()
     {
         return array_keys($this->data);
+    }
+
+    public function getWordsByFrequency()
+    {
+        $result = [];
+
+        array_map(function(Element $word) use (&$result){
+            $result[$word->word()->value()] = $word->getCountOverall();
+        }, $this->data);
+
+        arsort($result);
+
+        return $result;
     }
 }
