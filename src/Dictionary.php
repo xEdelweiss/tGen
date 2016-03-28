@@ -175,7 +175,7 @@ class Dictionary
 
         $words = array_filter($words);
         $words = array_filter($words, function($word){
-            return preg_match('/[a-zа-яіїє]/ui', $word); // skip without letters
+            return preg_match('/^[a-zа-яіїє]/ui', $word); // skip without letters at the beginning
         });
 
         return $words;
