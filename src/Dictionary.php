@@ -9,8 +9,6 @@ namespace xedelweiss\tGen;
 
 use xedelweiss\tGen\Metadata\Metadata;
 
-const MINIMAL_WORDS_IN_SAMPLE_SENTENCE = 5;
-
 /**
  * Class Dictionary
  *
@@ -21,6 +19,7 @@ class Dictionary
 {
     const ENCODING = 'UTF-8';
     const DEPTH = 3;
+    const MINIMAL_WORDS_IN_SAMPLE_SENTENCE = 5;
     const WORDS_ELEMENT = '<words>';
     public $structure = [];
 
@@ -53,10 +52,10 @@ class Dictionary
     public function saveToFile($path)
     {
         $serialized = serialize([
-                'samples' => $this->samples,
-                'structure' => $this->structure,
-                'metadata' => $this->metadata
-            ]);
+            'samples' => $this->samples,
+            'structure' => $this->structure,
+            'metadata' => $this->metadata
+        ]);
         file_put_contents($path, $serialized);
 
         return $this;
@@ -80,14 +79,15 @@ class Dictionary
 
     /**
      * @param int $depth
+     * @param int $minimalWordsInSentence
      * @return $this
      */
-    public function compile($depth = self::DEPTH)
+    public function compile($depth = self::DEPTH, $minimalWordsInSentence = self::MINIMAL_WORDS_IN_SAMPLE_SENTENCE)
     {
         // a b c d e
         $text = implode("\n", $this->samples);
         $text = $this->preProcess($text);
-        $sentences = $this->splitToSentences($text);
+        $sentences = $this->splitToSentences($text, $minimalWordsInSentence);
 
         // a b c e
         // b c d e
@@ -133,17 +133,19 @@ class Dictionary
     {
         $text = preg_replace('/[<>\[\]()]/u', '', $text); // remove some chars
         $text = preg_replace('/(\n|\r){2,}/u', '\1', $text); // remove multiple EOLs
-        $text = preg_replace('/(\n|\r)(?! *[a-zа-я])/u', '. ', $text); // split sentences on multiple lines
+        $text = preg_replace('/(\n|\r)(?! *[a-zа-яіїє\'’`])/u', '. ', $text); // split sentences on multiple lines
         $text = preg_replace('/(\n|\r)/u', ' ', $text); // replace EOLs with spaces
         $text = preg_replace('/ +/u', ' ', $text); // replace multiple spaces
+        $text = preg_replace('/-+/u', '-', $text); // replace multiple hyphens
         return $text;
     }
 
     /**
      * @param $text
+     * @param int $minimalWordsInSentence
      * @return array
      */
-    protected function splitToSentences($text)
+    protected function splitToSentences($text, $minimalWordsInSentence = self::MINIMAL_WORDS_IN_SAMPLE_SENTENCE)
     {
         $sentences = preg_split('/([.?!:"]| - )+/u', $text); // split sentences
         foreach ($sentences as &$sentence) {
@@ -151,9 +153,9 @@ class Dictionary
         }
         $sentences = array_filter(
             $sentences,
-            function ($item) {
+            function ($item) use ($minimalWordsInSentence) {
                 return (!empty($item) && mb_substr_count($item, ' ',
-                        self::ENCODING) > MINIMAL_WORDS_IN_SAMPLE_SENTENCE - 1);
+                        self::ENCODING) > $minimalWordsInSentence - 1);
             }
         );
 
@@ -166,12 +168,15 @@ class Dictionary
      */
     protected function splitToWords($text)
     {
-        $text = preg_replace('/[^a-zа-я]/ui', ' ', $text); // remove all, except letters
+        $text = preg_replace('/[^a-zа-яіїє\'`’-]/ui', ' ', $text); // remove all, except letters, hyphens, apostrophes
         $text = preg_replace('/ +/u', ' ', $text); // replace multiple spaces
 
         $words = preg_split('/ /ui', $text);
 
         $words = array_filter($words);
+        $words = array_filter($words, function($word){
+            return preg_match('/[a-zа-яіїє]/ui', $word); // skip without letters
+        });
 
         return $words;
     }
